@@ -22,12 +22,14 @@ func scratchpath() string {
 	// Remove .swp while we're at it
 	// TODO: Pull into more explicit function
 	swp := filepath.Join(usr.HomeDir, ".scratchpad.md.swp")
-	cmd := exec.Command("rm", swp)
-	cmd.Stdin = os.Stdin
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
-	err = cmd.Run()
-	check(err)
+	if exists(swp) {
+		cmd := exec.Command("rm", swp)
+		cmd.Stdin = os.Stdin
+		cmd.Stdout = os.Stdout
+		cmd.Stderr = os.Stderr
+		err = cmd.Run()
+		check(err)
+	}
 	return filepath.Join(usr.HomeDir, "scratchpad.md")
 }
 
@@ -47,6 +49,14 @@ func openPad(p string) {
 	cmd.Stderr = os.Stderr
 	err := cmd.Run()
 	check(err)
+}
+
+func exists(file string) bool {
+	if _, err := os.Stat(file); os.IsNotExist(err) {
+		return false
+	} else {
+		return true
+	}
 }
 
 func scratch() {
