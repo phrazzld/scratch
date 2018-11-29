@@ -19,6 +19,15 @@ func check(e error) {
 func scratchpath() string {
 	usr, err := user.Current()
 	check(err)
+	// Remove .swp while we're at it
+	// TODO: Pull into more explicit function
+	swp := filepath.Join(usr.HomeDir, ".scratchpad.md.swp")
+	cmd := exec.Command("rm", swp)
+	cmd.Stdin = os.Stdin
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	err = cmd.Run()
+	check(err)
 	return filepath.Join(usr.HomeDir, "scratchpad.md")
 }
 
