@@ -4,6 +4,7 @@ package main
 // Disposable command line notes
 
 import (
+	"fmt"
 	"os"
 	"os/exec"
 	"os/user"
@@ -22,7 +23,10 @@ func scratchpath() string {
 	// Remove .swp while we're at it
 	// TODO: Pull into more explicit function
 	swp := filepath.Join(usr.HomeDir, ".scratchpad.md.swp")
+	f := filepath.Join(usr.HomeDir, "scratchpad.md")
 	if exists(swp) {
+		fmt.Println(".scratchpad.md.swp contents:\n")
+		cat(swp)
 		cmd := exec.Command("rm", swp)
 		cmd.Stdin = os.Stdin
 		cmd.Stdout = os.Stdout
@@ -30,7 +34,9 @@ func scratchpath() string {
 		err = cmd.Run()
 		check(err)
 	}
-	return filepath.Join(usr.HomeDir, "scratchpad.md")
+	fmt.Println("scratchpad.md contents:\n")
+	cat(f)
+	return f
 }
 
 func makePad(p string) {
@@ -39,6 +45,15 @@ func makePad(p string) {
 	defer f.Close()
 	_, err = f.WriteString("# Scratchpad\n\n\n")
 	f.Sync()
+	check(err)
+}
+
+func cat(p string) {
+	cmd := exec.Command("cat", p)
+	cmd.Stdin = os.Stdin
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	err := cmd.Run()
 	check(err)
 }
 
