@@ -1,0 +1,21 @@
+# binaries
+*.exe
+*.dll
+*.so
+*.dylib
+
+# test binaries
+*.test
+
+# coverage outputs
+*.out
+
+# dependency directory
+vendor/
+
+# go workspace files
+go.work
+go.work.sum
+
+# environment files
+.env
