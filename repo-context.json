@@ -1,0 +1,9 @@
+{
+  "languages": [
+    "go",
+    "ruby"
+  ],
+  "contexts": [
+    "cli"
+  ]
+}
